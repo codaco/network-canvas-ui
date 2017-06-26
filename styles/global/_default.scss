@@ -1,0 +1,225 @@
+@import 'core/animation';
+@import 'core/bem';
+@import 'core/breakpoints';
+@import 'core/color';
+@import 'core/palette';
+@import 'core/grid';
+@import 'core/functions';
+@import 'core/spacing';
+@import 'core/typography';
+@import 'core/quicksand';
+@import 'core/normalize';
+
+$export-ui-classes: true !default;
+
+// Default Breakpoint Settings
+// =============================================================================
+@include breakpoint-set(medium, 768px);
+@include breakpoint-set(large, 1024px);
+@include breakpoint-classes(hide) {
+  display: none;
+}
+
+@include breakpoint-classes(show--flex) {
+  display: flex;
+}
+
+// Default Palette Settings
+// =============================================================================
+@include palette-set('primary', color('sea-green'));
+@include palette-set('menu', color('white'));
+@include palette-set('selected', color('white'));
+@include palette-set('settings', color('slate-blue'));
+@include palette-set('background', color('navy-taupe'));
+@include palette-set('text', color('white'));
+@include palette-set('tex-muted', color('cyber-grape'));
+@include palette-set('link', color('nc-coral'));
+@include palette-set('light-background', color('cyber-grape'));
+@include palette-set('dark-background', color('rich-black'));
+@include palette-set('headings', color('white'));
+@include palette-set('menu-headings', color('charcoal'));
+@include palette-set('divider', color('platinum--dark'));
+
+@include palette-set('node-base', color('neon-coral'));
+@include palette-set('node-dark', darken(color('neon-coral'), 5%));
+
+@include palette-set('edge-base', color('mustard'));
+@include palette-set('edge-dark', darken(color('mustard'), 5%));
+
+// Default Copy Typography Sizes
+// =============================================================================
+
+$netcanvas-font-size: 16px;
+$line-height-base: 1.5 !default;
+$headings-font-weight:   400 !default;
+$headings-line-height:   1.1 !default;
+
+@include type-set(
+  'quicksand', base,
+  (
+    font-family: 'Quicksand, "Open Sans", sans-serif',
+    font-size: 16px,
+    line-height: $line-height-base,
+    font-weight: $headings-font-weight
+  )
+);
+@include type-set(
+  'light', base, (font-weight: 300)
+);
+@include type-set(
+  'medium', base, (font-weight: 500)
+);
+@include type-set(
+  'bold', base, (font-weight: 700)
+);
+@include type-set(
+  'center', base, (text-align: center)
+);
+// H1  - questions, form, and menu headlines
+@include type-set(
+  'title-1', base,
+  (
+    font-size: 32px,
+    line-height: 1.429,
+    font-weight: $headings-font-weight,
+    text-align: center,
+    width: 100%
+  )
+);
+@include type-set('title-1', medium, (font-size: 28px));
+
+// H2 - Form question headlines, buttons, text links
+@include type-set(
+  'title-2', base,
+  (
+    font-size: 32px,
+    line-height: $line-height-base,
+    font-weight: $headings-font-weight,
+    width: 100%
+  )
+);
+@include type-set('title-2', medium, (font-size: 20px));
+// H3 - Large nodes, name generator panel, ordinal bins, categorial bins
+@include type-set(
+  'title-3', base,
+  (
+    font-size: 17px,
+    line-height: $line-height-base,
+    font-weight: $headings-font-weight,
+    text-align: center,
+    width: 100%
+  )
+);
+// H4 - Menu items, error message headline, body copy
+@include type-set(
+  'title-4', base,
+  (
+    font-size: 16px,
+    line-height: $line-height-base,
+    width: 100%
+  )
+);
+// H5 - Small nodes, context bins, number counter, form field label
+@include type-set(
+  'title-5', base,
+  (
+    font-size: 12px,
+    line-height: $line-height-base,
+    width: 100%
+  )
+);
+
+// Copy sizes
+@include type-set(
+  'copy-large', base,
+  (
+    font-size: 18px,
+    line-height: $line-height-base
+  )
+);
+@include type-set(
+  'copy-standard', base,
+  (
+    font-size: 16px,
+    line-height: $line-height-base
+  )
+);
+@include type-set(
+  'copy-small', base,
+  (
+    font-size: 12px,
+    line-height: $line-height-base,
+    font-weight: 100
+  )
+);
+
+@if $export-ui-classes {
+  @include normalize;
+  @include typography-classes;
+  @include grid-classes;
+}
+
+// TODO - when these variables are removed, they cause breaking changes in Network Canvas app, but they are redundant, so eventually they should be deprecated from the main APP
+$network-canvas-coral: #e2215b;
+$mustard: #f2b700;
+$light-sea-green: #00c9a2;
+$white: #fff;
+$slate-blue: #6b72ec;
+$navy-taupe: #2d2955;
+$cyber-grape: #3a3a75;
+$rich-black: #16152b;
+
+$sea-serpent: #0fb2e2;
+$purple-pizazz: #d30fef;
+$paradise-pink: #ff3a8c;
+$cerulean-blue: #0f70ff;
+$kiwi: #70bf54;
+$neon-carrot: #f7891e;
+$barbie-pink: #ed008c;
+$tomato: #e82d3f;
+
+$charcoal: #6d6f76;
+$platinum: #f2f6f7;
+$divider: #f2f2f2;
+$dark-platinum: #dae3e5;
+
+$netcanvas-font-family: 'Quicksand', 'Open Sans', sans serif;
+$netcanvas-font-size: 16px;
+$line-height-base: 1.5 !default;
+
+html {
+  font-family: $netcanvas-font-family;
+  font-size: $netcanvas-font-size;
+}
+
+// Headings
+
+$headings-font-family:   inherit !default;
+$headings-font-weight:   300 !default;
+$headings-line-height:   1.1 !default;
+$headings-color:         inherit !default;
+
+// Based of px sizes in style guide (em values were inconsistent)
+$text-sizes: (
+  h1: 1.75rem,
+  h2: 1.25rem,
+  h3: 1.0625rem,
+  h4: 1rem,
+  h5: .75rem,
+);
+
+@mixin text($text-size) {
+  font-family: $headings-font-family;
+  font-size: map-get($text-sizes, $text-size);
+  font-weight: $headings-font-weight;
+  letter-spacing: .05rem;
+  line-height: $headings-line-height;
+}
+
+@each $text-size in $text-sizes {
+  $text-size-name: nth($text-size, 1);
+
+  #{$text-size-name} {
+    @include text($text-size-name);
+  }
+}
