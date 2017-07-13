@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.animation = exports.Node = exports.SideMenu = exports.TextInput = exports.Icon = exports.Button = undefined;
+exports.Expandable = exports.Node = exports.SideMenu = exports.TextInput = exports.Icon = exports.Button = undefined;
 
 var _Button2 = require('./Button');
 
@@ -25,9 +25,9 @@ var _Node2 = require('./Node');
 
 var _Node3 = _interopRequireDefault(_Node2);
 
-var _animation2 = require('./animation');
+var _Expandable2 = require('./Expandable');
 
-var _animation3 = _interopRequireDefault(_animation2);
+var _Expandable3 = _interopRequireDefault(_Expandable2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,5 +36,5 @@ exports.Icon = _Icon3.default;
 exports.TextInput = _TextInput3.default;
 exports.SideMenu = _SideMenu3.default;
 exports.Node = _Node3.default;
-exports.animation = _animation3.default;
+exports.Expandable = _Expandable3.default;
 //# sourceMappingURL=index.js.map

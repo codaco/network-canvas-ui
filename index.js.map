@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["animation"],"mappings":";;;;;;;;;;;;;QAAOA,S","file":"index.js","sourcesContent":["export animation from './animation';\n"]}
