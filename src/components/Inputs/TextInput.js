@@ -16,12 +16,13 @@ const TextInput = ({
   ...rest
 }) => {
 
+  const activeOrHasValue = meta.active || !!input.value;
+  const errorText = meta.touched && meta.invalid && meta.error;
+
   const inputLabelClassName = cx({
     input__label: true,
     'input__label--active': meta.active,
   });
-
-  const showPlaceholder = (meta.active || meta.dirty) ? placeholder : null;
 
   return (
     <div className="input__container">
@@ -29,16 +30,16 @@ const TextInput = ({
         className={cx(['input', className])}
         autoComplete="off"
         type={isNumericOnly ? 'number' : 'text'}
-        placeholder={showPlaceholder}
+        placeholder={meta.active ? placeholder : null}
         {...rest}
         {...input}
       />
       <InputLabel
-        active={meta.active}
+        active={activeOrHasValue}
         name={input.name}
         label={label}
         className={inputLabelClassName}
-        errorText={meta.error}
+        errorText={errorText}
       />
     </div>
   );
