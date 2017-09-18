@@ -98,8 +98,8 @@ $transition-presets: (
   }
 }
 
-@mixin group-transition-leave {
-  &-leave {
+@mixin group-transition-exit {
+  &-exit {
     @content;
   }
 }
@@ -124,7 +124,7 @@ $transition-presets: (
     }
   }
 
-  &-leave {
+  &-exit {
     @each $key, $value in map-get($transition, 'end') {
       #{$key}: $value;
     }
@@ -169,7 +169,7 @@ $transition-presets: (
     }
   }
 
-  &-leave {
+  &-exit {
     @each $key, $value in map-get($transition, 'end') {
       #{$key}: $value;
     }
