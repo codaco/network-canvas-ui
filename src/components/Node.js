@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -6,7 +6,16 @@ import classNames from 'classnames';
   * Renders a Node.
   */
 
-class Node extends Component {
+class Node extends PureComponent {
+
+  labelClasses() {
+    const labelLength = this.label().length;
+    return `node__label-text len-${labelLength}`;
+  }
+
+  label() {
+    return this.props.placeholder ? '+' : this.props.label;
+  }
 
   render() {
     const {
@@ -23,13 +32,6 @@ class Node extends Component {
         'node--placeholder': placeholder,
       },
     );
-
-    const labelClasses = () => {
-      const labelLength = this.props.label.length;
-      return `node__label-text len-${labelLength}`;
-    };
-
-    const label = placeholder ? '+' : this.props.label;
 
     return (
       <div className={classes}>
@@ -52,10 +54,9 @@ class Node extends Component {
         </svg>
         <div className="node__label">
           <div
-            className={labelClasses()}
-            ref={(labelText) => { this.labelText = labelText; }}
+            className={this.labelClasses()}
           >
-            {label}
+            {this.label()}
           </div>
         </div>
       </div>
