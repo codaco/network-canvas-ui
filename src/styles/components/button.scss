@@ -34,7 +34,8 @@
     min-height: 80px;
 
     border-radius: 40px;
-    box-shadow: 0 3px rgba(0,0,0,0.25);
+    filter: drop-shadow(0 4px 0 transparentize(palette('dark-background'), .25));
+    margin-bottom: 4px; // needed to ensure that scrollable containers take into account the drop-shadow height
     background-color: color('sea-green');
 
     &:hover {
