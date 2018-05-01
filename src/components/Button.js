@@ -40,11 +40,13 @@ class Button extends Component {
       'left', 'right',
     ]),
     size: PropTypes.string,
+    className: PropTypes.string,
     color: PropTypes.string,
     onClick: PropTypes.func,
   }
 
   static defaultProps = {
+    className: '',
     content: '',
     children: null,
     icon: '',
@@ -56,6 +58,7 @@ class Button extends Component {
 
   render() {
     const {
+      className,
       color,
       size,
       children,
@@ -67,6 +70,7 @@ class Button extends Component {
     } = this.props;
 
     const buttonClassNames = cx({
+      className,
       button: true,
       [`button--${color}`]: !!color,
       [`button--${size}`]: !!size,
