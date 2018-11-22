@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import uuid from 'uuid';
+import big from './utils/big';
 
 /**
  * Ideally this would be a variation on the Text input, but we need different attributes,
@@ -33,11 +34,38 @@ class NumberInput extends PureComponent {
     hidden: false,
     min: null,
     max: null,
-    step: null,
+    step: 1,
+    buttons: false,
   };
 
   componentWillMount() {
     this.id = uuid();
+  }
+
+  get step() {
+    return parseFloat(this.props.step, 10);
+  }
+
+  get value() {
+    return parseFloat(this.props.input.value || 0, 10);
+  }
+
+  handleStepUp = () => {
+    const { input: { onChange }, max } = this.props;
+
+    const nextValue = big(this.value).add(this.step);
+
+    if (max && nextValue > max) { return; }
+    onChange(nextValue);
+  }
+
+  handleStepDown = () => {
+    const { input: { onChange }, min } = this.props;
+
+    const nextValue = big(this.value).subtract(this.step);
+
+    if (min && nextValue < min) { return; }
+    onChange(nextValue);
   }
 
   render() {
@@ -51,6 +79,7 @@ class NumberInput extends PureComponent {
       min,
       max,
       step,
+      buttons,
       autoFocus,
       hidden,
     } = this.props;
@@ -75,17 +104,21 @@ class NumberInput extends PureComponent {
             : ''
         }
         <div className={seamlessClasses}>
-          <input
-            id={this.id}
-            className="form-field-text__input"
-            placeholder={label || placeholder}
-            autoFocus={autoFocus} // eslint-disable-line
-            type="number"
-            min={min}
-            max={max}
-            step={step}
-            {...input}
-          />
+          <div>
+            { buttons && <button type="button" onClick={this.handleStepDown}> - </button> }
+            <input
+              id={this.id}
+              className="form-field-text__input"
+              placeholder={label || placeholder}
+              autoFocus={autoFocus} // eslint-disable-line
+              type="number"
+              min={min}
+              max={max}
+              step={step}
+              {...input}
+            />
+            { buttons && <button type="button" onClick={this.handleStepUp}> + </button> }
+          </div>
           {invalid && touched && <p className="form-field-text__error">{error}</p>}
         </div>
       </div>
