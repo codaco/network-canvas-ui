@@ -6,8 +6,10 @@ import { getCSSVariableAsNumber, getCSSVariableAsObject } from '../../utils/CSSV
 
 const Drop = ({ children, ...props }) => {
   const appear = {
-    translateY: ['-20vh', 0],
+    translateY: ['-5vh', 0],
+    opacity: [0, 1],
     elasticity: 0,
+    delay: getCSSVariableAsNumber('--animation-duration-fast-ms'),
     easing: getCSSVariableAsObject('--animation-easing-js'),
     duration: getCSSVariableAsNumber('--animation-duration-standard-ms'),
   };

@@ -6,8 +6,8 @@ import { getCSSVariableAsNumber, getCSSVariableAsObject } from '../../utils/CSSV
 
 class Fade extends PureComponent {
   defaultDuration = {
-    enter: getCSSVariableAsNumber('--animation-duration-fast-ms'),
-    exit: getCSSVariableAsNumber('--animation-duration-fast-ms'),
+    enter: 100,
+    exit: 100,
   };
 
   defaultEasing = getCSSVariableAsObject('--animation-easing-js');
