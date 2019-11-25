@@ -17,26 +17,26 @@ $module-name: form-field-slider;
   border-width: 0.1rem;
   border-style: solid;
   border-color: transparent;
-  min-height: $touch-height * 3.5;
+  min-height: calc(#{$touch-height} * 3.5);
 
   &__tracks {
     position: absolute;
     height: $touch-height;
     width: 100%;
     z-index: 1;
-    top: $height * 0.5;
+    top: calc(#{$height} * 0.5);
     transform: translate(0, -50%);
   }
 
   &__track-line {
     position: absolute;
     background-color: var(--slider-color);
-    height: $touch-height * 0.5;
+    height: calc(#{$touch-height} * 0.5);
     width: 100%;
     top: 50%;
     left: 0;
     transform: translate(0, -50%);
-    border-radius: $touch-height * 0.5;
+    border-radius: calc(#{$touch-height} * 0.5);
   }
 
   &__track {
@@ -49,21 +49,21 @@ $module-name: form-field-slider;
     cursor: pointer;
 
     &:first-child {
-      padding-left: $touch-height * 0.5;
-      transform: translate(-($touch-height * 0.5), -50%);
+      padding-left: calc(#{$touch-height} * 0.5);
+      transform: translate(calc(#{$touch-height} * -0.5), -50%);
 
       .form-field-slider__track-line {
         left: $touch-height * 0.5;
-        width: calc(100% - #{$touch-height * 0.5});
+        width: calc(100% - (#{$touch-height} * 0.5));
         background-color: var(--active-color);
       }
     }
 
     &:last-child {
-      padding-right: $touch-height * 0.5;
+      padding-right: calc(#{$touch-height} * 0.5);
 
       .form-field-slider__track-line {
-        width: calc(100% - #{$touch-height * 0.5});
+        width: calc(100% - (#{$touch-height} * 0.5));
       }
     }
   }
@@ -81,25 +81,25 @@ $module-name: form-field-slider;
       display: block;
       position: absolute;
       bottom: 0;
-      height: $touch-height * 0.5;
-      width: $touch-height * 0.5;
+      height: calc(#{$touch-height} * 0.5);
+      width: calc(#{$touch-height} * 0.5);
       transform-origin: bottom left;
       transform: rotate(-45deg);
       background: var(--tooltip-color);
     }
 
     &-label {
-      transform: translate(-50%, - 0.2 * $touch-height);
+      transform: translate(-50%, calc(-0.2 * #{$touch-height}));
       font-size: 0.8rem;
       background: var(--tooltip-color);
-      border-radius: $touch-height * 0.5;
-      padding: 0.5rem #{$touch-height * 0.5};
+      border-radius: calc(#{$touch-height} * 0.5);
+      padding: 0.5rem calc(#{$touch-height} * 0.5);
       display: flex;
       justify-content: center;
       align-items: center;
       width: max-content;
       min-height: $touch-height;
-      max-width: $align-margin * 1.75;
+      max-width: calc(#{$align-margin} * 1.75);
     }
 
     &--is-active {
@@ -109,7 +109,7 @@ $module-name: form-field-slider;
 
   &__ticks {
     position: relative;
-    top: $height * 0.5;
+    top: calc(#{$height} * 0.5);
     left: 0;
     width: 100%;
   }
@@ -121,7 +121,7 @@ $module-name: form-field-slider;
 
     &-label {
       position: absolute;
-      top: 0.5 * $touch-height;
+      top: calc(0.5 * #{$touch-height});
       transform: translate(-50%, 0);
       font-size: 0.75rem;
       display: flex;
@@ -129,7 +129,7 @@ $module-name: form-field-slider;
       align-items: center;
       width: max-content;
       min-height: $touch-height;
-      max-width: $align-margin * 1.75;
+      max-width: calc(#{$align-margin} * 1.75);
     }
 
     &::after {
@@ -147,7 +147,7 @@ $module-name: form-field-slider;
   // interactive element of handle/marker
   &__handle {
     position: absolute;
-    top: $height * 0.5;
+    top: calc(#{$height} * 0.5);
     transform: translate(-50%, -50%);
     z-index: 400;
     width: $height;
@@ -160,11 +160,11 @@ $module-name: form-field-slider;
   &__marker {
     $scale: 1.2; // needs to result in a whole number for smooth animation
     position: absolute;
-    top: $height * 0.5;
+    top: calc(#{$height} * 0.5);
     transform: translate(-50%, -50%);
     z-index: 300;
-    width: $touch-height / $scale;
-    height: $touch-height / $scale;
+    width: calc(#{$touch-height} / #{$scale});
+    height: calc(#{$touch-height} / #{$scale});
     border: 0;
     border-radius: 100%;
     background-color: var(--active-color);
@@ -182,7 +182,7 @@ $module-name: form-field-slider;
 
   &__slider {
     position: relative;
-    width: calc(100% - #{$align-margin * 2});
+    width: calc(100% - (#{$align-margin} * 2));
     height: $height;
     margin-left: $align-margin;
     margin-right: $align-margin;
@@ -225,7 +225,7 @@ $module-name: form-field-slider;
   &__error-message {
     color: var(--form-error-text);
     background: var(--error);
-    margin-top: $touch-height * 0.5;
+    margin-top: calc(#{$touch-height} * 0.5);
     padding: 0.5rem 0.25rem;
 
     svg {
