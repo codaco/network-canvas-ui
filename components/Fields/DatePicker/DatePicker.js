@@ -26,77 +26,79 @@ const DatePickerInput = ({
   const initialDate = isEmpty(value) ? null : value;
 
   return (
-    <DatePicker
-      onChange={onChangeInput}
-      date={initialDate}
-      min={min}
-      max={max}
-    >
-      <Panels>
-        <Years>
-          {({ years, year, set, date, onChange }) => (
-            <Panel
-              isActive={!set.includes('year')}
-              isComplete={set.includes('year')}
-              onSelect={() => onChange(asNullObject(['year', 'month', 'day']))}
-              preview={date.year}
-              type="year"
-            >
-              <RangePicker
+    <div className="date-picker">
+      <DatePicker
+        onChange={onChangeInput}
+        date={initialDate}
+        min={min}
+        max={max}
+      >
+        <Panels>
+          <Years>
+            {({ years, year, set, date, onChange }) => (
+              <Panel
+                isActive={!set.includes('year')}
+                isComplete={set.includes('year')}
+                onSelect={() => onChange(asNullObject(['year', 'month', 'day']))}
+                preview={date.year}
                 type="year"
-                range={years}
-                value={year}
-                onChange={y => onChange({ year: y, month: null, day: null })}
-              />
-            </Panel>
-          )}
-        </Years>
-        <Months>
-          {({ months, month, set, date, onChange }) => (
-            <Panel
-              isActive={set.includes('year') && !set.includes('month')}
-              isComplete={set.includes('month')}
-              type="month"
-              preview={date.month}
-              onSelect={() => onChange(asNullObject(['month', 'day']))}
-            >
-              <RangePicker
+              >
+                <RangePicker
+                  type="year"
+                  range={years}
+                  value={year}
+                  onChange={y => onChange({ year: y, month: null, day: null })}
+                />
+              </Panel>
+            )}
+          </Years>
+          <Months>
+            {({ months, month, set, date, onChange }) => (
+              <Panel
+                isActive={set.includes('year') && !set.includes('month')}
+                isComplete={set.includes('month')}
                 type="month"
-                range={months}
-                value={month}
-                format={formatMonth}
-                onChange={m => onChange({ month: m, day: null })}
-              />
-            </Panel>
-          )}
-        </Months>
-        <Days>
-          {({ days, day, set, date, onChange }) => (
-            <Panel
-              isActive={set.includes('year') && set.includes('month') && !set.includes('day')}
-              isComplete={set.includes('day')}
-              preview={date.day}
-              type="day"
-              onSelect={() => onChange(asNullObject(['day']))}
-            >
-              <RangePicker
+                preview={formatMonth(date.month)}
+                onSelect={() => onChange(asNullObject(['month', 'day']))}
+              >
+                <RangePicker
+                  type="month"
+                  range={months}
+                  value={month}
+                  format={formatMonth}
+                  onChange={m => onChange({ month: m, day: null })}
+                />
+              </Panel>
+            )}
+          </Months>
+          <Days>
+            {({ days, day, set, date, onChange }) => (
+              <Panel
+                isActive={set.includes('year') && set.includes('month') && !set.includes('day')}
+                isComplete={set.includes('day')}
+                preview={date.day}
                 type="day"
-                range={days}
-                value={day}
-                onChange={d => onChange({ day: d })}
-              />
-            </Panel>
-          )}
-        </Days>
-      </Panels>
-    </DatePicker>
+                onSelect={() => onChange(asNullObject(['day']))}
+              >
+                <RangePicker
+                  type="day"
+                  range={days}
+                  value={day}
+                  onChange={d => onChange({ day: d })}
+                />
+              </Panel>
+            )}
+          </Days>
+        </Panels>
+      </DatePicker>
+    </div>
   );
 };
 
 DatePickerInput.defaultProps = {
   value: null,
   parameters: {
-    min: '1970-01-01',
+    min: '1973-01-01',
     max: '2019-12-01',
   },
 };

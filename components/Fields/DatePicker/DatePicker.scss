@@ -1,4 +1,43 @@
-.date-picker {
+$module-name: date-picker;
+
+.form-field-date-picker {
+  &__error {
+    opacity: 0;
+    max-height: 0;
+    transition: opacity var(--animation-easing) var(--animation-duration-standard),
+    max-height var(--animation-easing) var(--animation-duration-standard);
+  }
+
+  &__error-message {
+    color: var(--form-error-text);
+    background: var(--error);
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.25rem;
+
+    svg {
+      max-height: 1.2rem;
+    }
+  }
+
+  &--has-error {
+    border-width: 0.1rem;
+    border-style: solid;
+    border-color: var(--error);
+
+    .#{$module-name}__error {
+      opacity: 1;
+      max-height: 2.5rem;
+    }
+  }
+}
+
+.#{$module-name} {
+  --active-color: var(--color-sea-green);
+  // --slider-color: var(--color-platinum);
+  // --disabled-color: var(--color-charcoal);
+  // --label-color: var(--color-white);
+  // --tooltip-color: var(--color-white);
+  // --tooltip-label: var(--text-dark);
 
   &__panels {
     display: flex;
@@ -7,11 +46,13 @@
 
   &__panel {
     display: flex;
-    flex-direction: column;
     flex: 0 1 33%;
     pointer-events: none;
     opacity: 0.33;
-    transition: opacity ease 300ms;
+    transition-timing-function: ease;
+    transition-duration: 300ms;
+    transition-property: opacity, background-color;
+    background-color: var(--input-background);
 
     &--is-active,
     &--is-complete {
@@ -20,21 +61,28 @@
     }
 
     &--year {
-      background: blue;
+      // background: blue;
     }
 
     &--month {
-      background: red;
+      // background: red;
     }
 
     &--day {
-      background: green;
+      // background: green;
     }
   }
 
   &__panel-preview {
     display: none;
-    min-height: 250px;
+    font-size: 2rem;
+
+    span {
+      background-color: var(--active-color);
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      cursor: pointer;
+    }
   }
 
   &__panel-content {
@@ -50,7 +98,6 @@
     box-sizing: border-box;
     height: 2rem;
     width: 100%;
-    max-width: 4rem;
     padding: 0.5rem 0;
     border-radius: 0.5rem;
     background-color: transparent;
@@ -64,45 +111,68 @@
     cursor: pointer;
 
     &--is-active {
-      .date-picker__highlight {
-        background-color: white;
+      .#{$module-name}__highlight {
+        background-color: var(--active-color);
       }
     }
   }
 
   &__range-picker {
     flex: 0 1 100%;
-
-    &--month,
-    &--day {
-      display: flex;
-      flex-wrap: wrap;
-    }
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
 
     &--year {
-      overflow-y: scroll;
+      .#{$module-name}__range-item {
+        flex: 0 1 20%;
+        padding: 1rem 0;
 
-      .date-picker__range-item {
-        flex: 0 1 100%;
+        &:nth-child(10n - 4),
+        &:nth-child(10n - 3),
+        &:nth-child(10n - 2),
+        &:nth-child(10n - 1),
+        &:nth-child(10n) {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
       }
     }
 
     &--month {
-      .date-picker__range-item {
-
+      .#{$module-name}__range-item {
         flex: 0 1 33%;
+
+        &:nth-child(6n - 2),
+        &:nth-child(6n - 1),
+        &:nth-child(6n) {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
       }
     }
 
     &--day {
-      .date-picker__range-item {
+      .#{$module-name}__range-item {
         flex: 0 1 14%;
+
+        &:nth-child(14n - 6),
+        &:nth-child(14n - 5),
+        &:nth-child(14n - 4),
+        &:nth-child(14n - 3),
+        &:nth-child(14n - 2),
+        &:nth-child(14n - 1),
+        &:nth-child(14n) {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
       }
     }
   };
 
   @media only screen and (max-width: 1280px) {
+    max-width: 600px;
+    margin: 0 auto;
+
     &__panel-preview {
+      min-height: 250px;
       flex-grow: 1;
       flex-shrink: 1;
       flex-basis: 0;
@@ -124,30 +194,50 @@
       transition: opacity ease 300ms;
     }
 
+    &__range-item {
+      &--is-active {
+        .#{$module-name}__highlight {
+          background-color: unset;
+          color: unset;
+        }
+      }
+    }
+
     &__panel {
       flex-direction: row;
       position: relative;
-      transition: flex-basis ease 300ms;
+      transition: flex-basis ease 300ms,
+        border-left-color ease 300ms;
       flex-basis: 0;
       overflow: hidden;
+      border-color: transparent;
+      border-style: solid;
+      border-left-width: 2px;
 
       &--is-active {
         flex-basis: 100%;
+        border: transparent 2px solid;
 
-        .date-picker__panel-content {
+        border-left-color: var(--active-color);
+
+        &:first-child {
+          border-left-color: transparent;
+        }
+
+        .#{$module-name}__panel-content {
           flex-basis: 100%;
           opacity: 1;
         }
-        .date-picker__panel-preview {
+        .#{$module-name}__panel-preview {
           flex-basis: 0;
           opacity: 0;
         }
       }
 
       &--is-complete {
-        flex-basis: 33%;
+        flex-basis: auto;
 
-        .date-picker__panel-content {
+        .#{$module-name}__panel-content {
           position: absolute;
           top: 0;
           left: 0;
@@ -156,7 +246,7 @@
           opacity: 0;
           z-index: -1;
         }
-        .date-picker__panel-preview {
+        .#{$module-name}__panel-preview {
           flex-basis: 100%;
           opacity: 1;
         }
