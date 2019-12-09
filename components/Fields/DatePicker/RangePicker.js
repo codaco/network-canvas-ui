@@ -8,13 +8,13 @@ const RangePicker = ({
   value,
   onChange,
   format,
+  offset,
 }) => {
   const classes = cx(
     'date-picker__range-picker',
     { [`date-picker__range-picker--${type}`]: !!type },
   );
 
-  const offset = type !== 'year' ? 0 : range[0] % 5;
   const padding = times(
     offset,
     () => (<div className="date-picker__range-item" />),
@@ -43,6 +43,7 @@ const RangePicker = ({
 
 RangePicker.defaultProps = {
   format: x => x,
+  offset: 0,
 };
 
 export default RangePicker;

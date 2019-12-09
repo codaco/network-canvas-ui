@@ -1,17 +1,19 @@
 import React from 'react';
-import { Info } from 'luxon';
+import { DateTime, Info } from 'luxon';
 import { get } from 'lodash';
 import { DatePicker, Years, Months, Days } from './DatePicker/';
 import Panels from './Panels';
 import Panel from './Panel';
 import RangePicker from './RangePicker';
-import './DatePicker.scss';
 
 const isEmpty = value =>
   value === null || value === '';
 
 const formatMonth = numericMonth =>
   get(Info.months(), numericMonth - 1, numericMonth);
+
+const getFirstDayOfMonth = dateObj =>
+  DateTime.fromObject({ ...dateObj, day: 1 }).toFormat('c');
 
 const asNullObject = keys =>
   keys.reduce((acc, key) => ({ ...acc, [key]: null }), {});
@@ -47,6 +49,7 @@ const DatePickerInput = ({
                   type="year"
                   range={years}
                   value={year}
+                  offset={years % 5}
                   onChange={y => onChange({ year: y, month: null, day: null })}
                 />
               </Panel>
@@ -84,6 +87,7 @@ const DatePickerInput = ({
                   type="day"
                   range={days}
                   value={day}
+                  offset={getFirstDayOfMonth(date) - 1}
                   onChange={d => onChange({ day: d })}
                 />
               </Panel>

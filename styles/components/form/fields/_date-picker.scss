@@ -1,4 +1,5 @@
 $module-name: date-picker;
+$animation-speed: var(--animation-duration-standard);
 
 .form-field-date-picker {
   &__error {
@@ -33,6 +34,8 @@ $module-name: date-picker;
 
 .#{$module-name} {
   --active-color: var(--color-sea-green);
+  max-width: 100%;
+  overflow: hidden;
   // --slider-color: var(--color-platinum);
   // --disabled-color: var(--color-charcoal);
   // --label-color: var(--color-white);
@@ -46,36 +49,35 @@ $module-name: date-picker;
 
   &__panel {
     display: flex;
-    flex: 0 1 33%;
+    flex: 0 1 100%;
     pointer-events: none;
     opacity: 0.33;
-    transition-timing-function: ease;
-    transition-duration: 300ms;
-    transition-property: opacity, background-color;
+    transition:
+      opacity ease $animation-speed,
+      background-color ease $animation-speed,
+      flex-basis ease $animation-speed,
+      flex-grow ease $animation-speed,
+      border-left-color ease var(--animation-duration-slow);
     background-color: var(--input-background);
+
+    border-color: rgba(0, 0, 0, 0.2);
+    border-style: solid;
+    border-width: 0 0 0 2px;
+
+    &:first-child {
+      border-left-width: 0px;
+    }
 
     &--is-active,
     &--is-complete {
       opacity: 1;
       pointer-events: all;
     }
-
-    &--year {
-      // background: blue;
-    }
-
-    &--month {
-      // background: red;
-    }
-
-    &--day {
-      // background: green;
-    }
   }
 
   &__panel-preview {
     display: none;
-    font-size: 2rem;
+    font-size: 1.5rem;
 
     span {
       background-color: var(--active-color);
@@ -89,6 +91,7 @@ $module-name: date-picker;
     display: flex;
     flex-direction: row;
     max-height: 250px;
+    width: 100%;
   }
 
   &__highlight {
@@ -101,7 +104,7 @@ $module-name: date-picker;
     padding: 0.5rem 0;
     border-radius: 0.5rem;
     background-color: transparent;
-    transition: background-color ease 300ms;
+    transition: background-color ease $animation-speed;
   }
 
   &__range-item {
@@ -109,6 +112,7 @@ $module-name: date-picker;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    padding: 0 1rem;
 
     &--is-active {
       .#{$module-name}__highlight {
@@ -118,14 +122,16 @@ $module-name: date-picker;
   }
 
   &__range-picker {
+    @extend .scrollable;
+    padding-top: 0 !important;
     flex: 0 1 100%;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     overflow-y: auto;
+    width: 100%;
 
     &--year {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
       .#{$module-name}__range-item {
-        flex: 0 1 20%;
         padding: 1rem 0;
 
         &:nth-child(10n - 4),
@@ -133,27 +139,25 @@ $module-name: date-picker;
         &:nth-child(10n - 2),
         &:nth-child(10n - 1),
         &:nth-child(10n) {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgba(255, 255, 255, 0.05);
         }
       }
     }
 
     &--month {
+      grid-template-columns: 1fr 1fr 1fr;
       .#{$module-name}__range-item {
-        flex: 0 1 33%;
-
         &:nth-child(6n - 2),
         &:nth-child(6n - 1),
         &:nth-child(6n) {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgba(255, 255, 255, 0.05);
         }
       }
     }
 
     &--day {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
       .#{$module-name}__range-item {
-        flex: 0 1 14%;
-
         &:nth-child(14n - 6),
         &:nth-child(14n - 5),
         &:nth-child(14n - 4),
@@ -161,14 +165,14 @@ $module-name: date-picker;
         &:nth-child(14n - 2),
         &:nth-child(14n - 1),
         &:nth-child(14n) {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgba(255, 255, 255, 0.05);
         }
       }
     }
   };
 
   @media only screen and (max-width: 1280px) {
-    max-width: 600px;
+    // min-width: 300px;
     margin: 0 auto;
 
     &__panel-preview {
@@ -191,7 +195,7 @@ $module-name: date-picker;
 
     &__panel-preview,
     &__panel-content {
-      transition: opacity ease 300ms;
+      transition: opacity ease $animation-speed;
     }
 
     &__range-item {
@@ -206,23 +210,14 @@ $module-name: date-picker;
     &__panel {
       flex-direction: row;
       position: relative;
-      transition: flex-basis ease 300ms,
-        border-left-color ease 300ms;
       flex-basis: 0;
       overflow: hidden;
       border-color: transparent;
-      border-style: solid;
-      border-left-width: 2px;
 
       &--is-active {
-        flex-basis: 100%;
-        border: transparent 2px solid;
-
+        // flex-basis: auto;
+        flex-grow: 2;
         border-left-color: var(--active-color);
-
-        &:first-child {
-          border-left-color: transparent;
-        }
 
         .#{$module-name}__panel-content {
           flex-basis: 100%;
@@ -235,7 +230,8 @@ $module-name: date-picker;
       }
 
       &--is-complete {
-        flex-basis: auto;
+        // flex-basis: auto;
+        flex-grow: 1;
 
         .#{$module-name}__panel-content {
           position: absolute;
