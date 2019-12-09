@@ -12,3 +12,10 @@ export const getFirstDayOfMonth = dateObj =>
 
 export const asNullObject = keys =>
   keys.reduce((acc, key) => ({ ...acc, [key]: null }), {});
+
+export const getProperties = obj =>
+  Object.keys(obj)
+    .reduce((acc, key) => {
+      if (!obj[key]) { return acc; }
+      return [...acc, key];
+    }, []);

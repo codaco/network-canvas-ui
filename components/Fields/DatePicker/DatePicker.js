@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DatePicker, Years, Months, Days } from './DatePicker/';
 import Panels from './Panels';
 import Panel from './Panel';
 import RangePicker from './RangePicker';
 import DatePreview from './DatePreview';
-import { isEmpty, formatMonth, getFirstDayOfMonth } from './helpers';
+import { isEmpty, formatMonth, getFirstDayOfMonth, getProperties } from './helpers';
 
 const DatePickerInput = ({
   onChange: onChangeInput,
@@ -14,7 +14,13 @@ const DatePickerInput = ({
   const { min, max } = parameters;
   // treat empty string as no value (for Redux Forms)
   const initialDate = isEmpty(value) ? null : value;
-  const [isOpen, toggleOpen] = useState(true);
+  const [panelsOpen, setPanelsOpen] = useState(false);
+
+  useEffect(() => {
+    const setProperties = getProperties(value);
+    setProperties.includes(['year', 'month', 'day']);
+    setPanelsOpen(false);
+  }, [JSON.stringify(value)]);
 
   return (
     <div className="date-picker">
@@ -24,8 +30,8 @@ const DatePickerInput = ({
         min={min}
         max={max}
       >
-        <DatePreview />
-        <Panels>
+        <DatePreview openEditor={() => setPanelsOpen(true)} />
+        <Panels isOpen={panelsOpen}>
           <Years>
             {({ years, year, set, date, onChange }) => (
               <Panel
