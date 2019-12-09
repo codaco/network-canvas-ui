@@ -4,7 +4,7 @@ import Panels from './Panels';
 import Panel from './Panel';
 import RangePicker from './RangePicker';
 import DatePreview from './DatePreview';
-import { isEmpty, formatMonth, getFirstDayOfMonth, getProperties } from './helpers';
+import { isEmpty, formatMonth, getFirstDayOfMonth, hasProperties } from './helpers';
 
 const DatePickerInput = ({
   onChange: onChangeInput,
@@ -17,10 +17,8 @@ const DatePickerInput = ({
   const [panelsOpen, setPanelsOpen] = useState(false);
 
   useEffect(() => {
-    const setProperties = getProperties(value);
-    setProperties.includes(['year', 'month', 'day']);
     setPanelsOpen(false);
-  }, [JSON.stringify(value)]);
+  }, [value]);
 
   return (
     <div className="date-picker">
@@ -33,10 +31,10 @@ const DatePickerInput = ({
         <DatePreview openEditor={() => setPanelsOpen(true)} />
         <Panels isOpen={panelsOpen}>
           <Years>
-            {({ years, year, set, date, onChange }) => (
+            {({ years, year, date, onChange }) => (
               <Panel
-                isActive={!set.includes('year')}
-                isComplete={set.includes('year')}
+                isActive={hasProperties([], ['year'])(date)}
+                isComplete={hasProperties(['year'])(date)}
                 type="year"
               >
                 <RangePicker
@@ -50,10 +48,10 @@ const DatePickerInput = ({
             )}
           </Years>
           <Months>
-            {({ months, month, set, date, onChange }) => (
+            {({ months, month, date, onChange }) => (
               <Panel
-                isActive={set.includes('year') && !set.includes('month')}
-                isComplete={set.includes('month')}
+                isActive={hasProperties(['year'], ['month'])(date)}
+                isComplete={hasProperties(['month'])(date)}
                 type="month"
               >
                 <RangePicker
@@ -67,10 +65,10 @@ const DatePickerInput = ({
             )}
           </Months>
           <Days>
-            {({ days, day, set, date, onChange }) => (
+            {({ days, day, date, onChange }) => (
               <Panel
-                isActive={set.includes('year') && set.includes('month')}
-                isComplete={set.includes('day')}
+                isActive={hasProperties(['year', 'month'])(date)}
+                isComplete={hasProperties(['day'])(date)}
                 type="day"
               >
                 <RangePicker
