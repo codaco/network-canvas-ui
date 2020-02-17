@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import withClickableAffordance from '../behaviours/withClickableAffordance';
 
 const renderButtonIcon = ({ icon, iconPosition }) => {
   const iconClassNames = cx({
@@ -79,7 +80,12 @@ class Button extends PureComponent {
     });
 
     return (
-      <button type={type} className={buttonClassNames} onClick={onClick} {...rest}>
+      <button
+        type={type}
+        className={buttonClassNames}
+        onClick={onClick}
+        {...rest}
+      >
         {renderButtonIcon({ icon, iconPosition })}
         <span className="button__content">{children || content}</span>
       </button>
@@ -87,4 +93,4 @@ class Button extends PureComponent {
   }
 }
 
-export default Button;
+export default withClickableAffordance(Button);
