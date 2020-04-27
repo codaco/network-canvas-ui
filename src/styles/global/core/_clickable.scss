@@ -6,15 +6,31 @@
   $adjusted-shadow-size: $base-shadow * $depth;
   $adjusted-blur: $base-blur * $depth;
 
-
   box-shadow: 0 $adjusted-shadow-size rgba(0, 0, 0, 0.35); //sass-lint:disable-line no-color-literals
-  transition: transform var(--animation-duration-very-fast) var(--animation-easing), box-shadow var(--animation-duration-very-fast) var(--animation-easing);
+  transition: transform var(--animation-duration-very-fast) var(--animation-easing);
+  position: relative;
+
+  &::after {
+    box-shadow: 0 #{$adjusted-shadow-size * 2} $adjusted-blur 0 rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    display: block;
+    border-radius: 2rem;
+    transition: opacity var(--animation-duration-very-fast) var(--animation-easing);
+  }
 
   &:not(:disabled):hover {
     text-decoration: none;
     cursor: pointer;
     transform: translateY(-#{$adjusted-shadow-size});
-    box-shadow: 0 #{$adjusted-shadow-size * 2} $adjusted-blur 0 rgba(0, 0, 0, 0.35);
+    &::after {
+      opacity: 1;
+    }
   }
 
   &:not(:disabled):active {
