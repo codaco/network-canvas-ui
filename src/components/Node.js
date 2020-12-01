@@ -6,6 +6,11 @@ import classNames from 'classnames';
   * Renders a Node.
   */
 
+
+// Add ellipsis for really long labels;
+const getLabel = label =>
+  (label.length < 35 ? label : `${label.substring(0, 31)}\u{AD}...`);
+
 class Node extends Component {
   render() {
     const {
@@ -35,7 +40,7 @@ class Node extends Component {
     const nodeBaseColor = `var(--${color})`;
     const nodeFlashColor = `var(--${color}--dark)`;
 
-    const label = this.props.label.length < 22 ? this.props.label : `${this.props.label.substring(0, 18)}\u{AD}...`; // Add ellipsis for really long labels
+    const label = getLabel(this.props.label);
 
     return (
       <div className={classes} onClick={handleClick}>

@@ -72,11 +72,12 @@
       align-items: center;
       flex-wrap: nowrap;
       text-align: center;
-      font-size: 0.15em;
+      font-size: 0.11em;
       font-family: $netcanvas-font-stack;
       color: palette('text');
       hyphens: auto;
-      overflow: hidden;
+      // overflow: hidden;
+      word-break: break-all;
       white-space: pre-line;
 
       &.len-1 {
