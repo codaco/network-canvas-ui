@@ -1,5 +1,6 @@
-import { withProps, compose } from 'recompose';
+import React from 'react';
 import { has } from 'lodash';
+import PropTypes from 'prop-types';
 import TextInput from './Text';
 
 const toInt = (value) => {
@@ -10,19 +11,25 @@ const toInt = (value) => {
   return int;
 };
 
-const withNumericChangeHandlers = withProps(props => ({
-  type: 'number',
-  input: {
-    ...props.input,
-    onChange: e =>
-      has(props, 'input.onChange') &&
-      props.input.onChange(toInt(e.target.value)),
-    onBlur: e =>
-      has(props, 'input.onBlur') &&
-      props.input.onBlur(toInt(e.target.value)),
-  },
-}));
 
-export default compose(
-  withNumericChangeHandlers,
-)(TextInput);
+const NumberInput = ({ input, ...rest }) => {
+  const numberInput = {
+    ...input,
+    onChange: e =>
+      has(input, 'onChange') && input.onChange(toInt(e.target.value)),
+    onBlur: e =>
+      has(input, 'onBlur') && input.onBlur(toInt(e.target.value)),
+  };
+
+  return <TextInput input={numberInput} type="number" {...rest} />
+};
+
+NumberInput.propTypes = {
+  input: PropTypes.object,
+};
+
+NumberInput.defaultProps = {
+  input: {},
+};
+
+export default NumberInput;

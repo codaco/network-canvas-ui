@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { compose } from 'recompose';
 import windowRootConsumer from './windowRootConsumer';
 
 const getDisplayName = WrappedComponent =>
@@ -37,7 +36,4 @@ const window = (WrappedComponent, defaultRoot = document.body) =>
 
 export { window };
 
-export default compose(
-  windowRootConsumer,
-  window,
-);
+export default windowRootConsumer(window);
