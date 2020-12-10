@@ -1,39 +1,25 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
-import windowRootConsumer from './windowRootConsumer';
+import { WindowRootContext } from './windowRootProvider';
 
-const getDisplayName = WrappedComponent =>
-  WrappedComponent.displayName || WrappedComponent.name || 'Component';
-
-/*
- * HOC which will cause a component to be rendered outside of the main ReactDOM hierachy,
- * useful for modals and other windowed components.
- */
 const window = (WrappedComponent, defaultRoot = document.body) =>
-  class Window extends Component {
-    static get displayName() {
-      return `Window(${getDisplayName(WrappedComponent)})`;
-    }
+  (props) => {
+    const { windowRoot, setWindowRoot } = useContext(WindowRootContext);
 
-    static propTypes = {
-      windowRoot: PropTypes.any,
-    };
+    const portal = windowRoot || defaultRoot;
 
-    static defaultProps = {
-      windowRoot: null,
-    }
-
-    render() {
-      const portal = this.props.windowRoot || defaultRoot;
-
-      return ReactDOM.createPortal(
-        <WrappedComponent {...this.props} />,
-        portal,
-      );
-    }
+    return ReactDOM.createPortal(
+      (
+        <WrappedComponent
+          {...props}
+          windowRoot={windowRoot}
+          setWindowRoot={setWindowRoot}
+        />
+      ),
+      portal,
+    );
   };
 
 export { window };
 
-export default windowRootConsumer(window);
+export default window;
