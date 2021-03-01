@@ -3,12 +3,11 @@ import unified from 'unified';
 import markdown from 'remark-parse';
 
 const parse = (value) => {
-  const data = unified()
+  return unified()
     .use(markdown)
     .use(slate)
-    .parse(value);
-
-  return data;
+    .process(value)
+    .then(({ result }) => result);
 };
 
 export default parse;

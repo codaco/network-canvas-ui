@@ -4,7 +4,12 @@ import Harness from './helpers/Harness';
 import RichText from '../src/components/RichText';
 import '../src/styles/_all.scss';
 
-const initialValue = '## Some example markdown\nHere\'s some bold text';
+const initialValue = `
+# A title to start
+## A subtitle
+Here's *some* **bold** ***text***
+[A link](http://www.example.com)
+`;
 
 export default { title: 'RichText' };
 

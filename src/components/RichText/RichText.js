@@ -6,6 +6,7 @@ import { includes, noop } from 'lodash';
 import { MarkButton, BlockButton } from './buttons';
 import { Element, Leaf } from './renderers';
 import serialize from './serialize';
+import parse from './parse';
 
 const types = [
   'bold',
@@ -23,10 +24,10 @@ const initialValue = [{
   ],
 }];
 
-const getValue = (value) => {
+const parseValue = (value) => {
   if (!value || value === '') { return initialValue; }
-  return initialValue;
-  // return parse(value);
+
+  return parse(value);
 };
 
 const Toolbar = ({ controls }) => (
@@ -37,8 +38,8 @@ const Toolbar = ({ controls }) => (
     { includes(controls, 'code') && <MarkButton format="code" icon="code" /> }
     { includes(controls, 'headings') && (
       <Fragment>
-        <BlockButton format="heading-one" icon="looks_one" />
-        <BlockButton format="heading-two" icon="looks_two" />
+        <BlockButton format="heading_one" icon="looks_one" />
+        <BlockButton format="heading_two" icon="looks_two" />
       </Fragment>
     )}
     { includes(controls, 'quote') &&
@@ -46,15 +47,15 @@ const Toolbar = ({ controls }) => (
     }
     { includes(controls, 'list') && (
       <Fragment>
-        <BlockButton format="numbered-list" icon="format_list_numbered" />
-        <BlockButton format="bulleted-list" icon="format_list_bulleted" />
+        <BlockButton format="numbered_list" icon="format_list_numbered" />
+        <BlockButton format="bulleted_list" icon="format_list_bulleted" />
       </Fragment>
     )}
   </div>
 );
 
 const RichText = ({ allow, ...props }) => {
-  const [value, setValue] = useState(getValue(props.value));
+  const [value, setValue] = useState(initialValue);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -63,6 +64,14 @@ const RichText = ({ allow, ...props }) => {
     console.log('onchange', { value, serialized: serialize(value) });
     props.onChange(serialize(value));
   }, [JSON.stringify(value)]);
+
+  useEffect(() => {
+    parseValue(props.value)
+      .then((result) => {
+        console.log({ parse: result });
+        setValue(result);
+      });
+  }, []);
 
   const handleChange = (value) => {
     console.log({ value });
