@@ -1,10 +1,11 @@
-import React, { Fragment, useCallback, useMemo } from 'react';
+import React, { Fragment, useCallback, useState, useEffect, useMemo } from 'react';
 import { Editable, withReact, Slate } from 'slate-react';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
-import { includes } from 'lodash';
+import { includes, noop } from 'lodash';
 import { MarkButton, BlockButton } from './buttons';
 import { Element, Leaf } from './renderers';
+import serialize from './serialize';
 
 const types = [
   'bold',
@@ -15,6 +16,18 @@ const types = [
   'headings',
   'lists',
 ];
+
+const initialValue = [{
+  children: [
+    { text: '' },
+  ],
+}];
+
+const getValue = (value) => {
+  if (!value || value === '') { return initialValue; }
+  return initialValue;
+  // return parse(value);
+};
 
 const Toolbar = ({ controls }) => (
   <div className="rich-text__toolbar">
@@ -40,15 +53,24 @@ const Toolbar = ({ controls }) => (
   </div>
 );
 
-const initialValue = [];
-
-const RichText = ({ value, onChange, allow }) => {
+const RichText = ({ allow, ...props }) => {
+  const [value, setValue] = useState(getValue(props.value));
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
+  useEffect(() => {
+    console.log('onchange', { value, serialized: serialize(value) });
+    props.onChange(serialize(value));
+  }, [JSON.stringify(value)]);
+
+  const handleChange = (value) => {
+    console.log({ value });
+    setValue(value);
+  };
+
   return (
-    <Slate editor={editor} value={value} onChange={onChange}>
+    <Slate editor={editor} value={value} onChange={handleChange}>
       <div className="rich-text">
         <Toolbar controls={allow} />
         <div className="rich-text__editable">
@@ -67,6 +89,7 @@ const RichText = ({ value, onChange, allow }) => {
 
 RichText.defaultProps = {
   value: [],
+  onChange: noop,
   allow: types,
 };
 

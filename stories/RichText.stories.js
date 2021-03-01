@@ -8,20 +8,20 @@ const initialValue = '## Some example markdown\nHere\'s some bold text';
 
 export default { title: 'RichText' };
 
-export const WithError = () => {
+export const Plain = () => {
   const [value, setValue] = useState(initialValue);
 
   const handleChange = (newValue) => {
     setValue(newValue);
-    action('onChange')(newValue);
+    action('onChange');
   };
 
   return <RichText value={value} onChange={handleChange} />;
 
   // return (
   //   <Harness
-  //     requiredProps={requiredProps}
-  //     meta={renderMeta}
+  //     value={value}
+  //     onChange={handleChange}
   //   >
   //     {props => (
   //       <RichText {...props} />
