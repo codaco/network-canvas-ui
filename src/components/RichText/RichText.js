@@ -1,9 +1,9 @@
-import React, { Fragment, useCallback, useState, useEffect, useMemo } from 'react';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { Editable, withReact, Slate } from 'slate-react';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
-import { includes, noop } from 'lodash';
-import { MarkButton, BlockButton } from './buttons';
+import Toolbar from './Toolbar';
 import { Element, Leaf } from './renderers';
 import serialize from './serialize';
 import parse from './parse';
@@ -18,68 +18,39 @@ const types = [
   'lists',
 ];
 
-const initialValue = [{
+const defaultValue = [{
   children: [
     { text: '' },
   ],
 }];
 
 const parseValue = (value) => {
-  if (!value || value === '') { return initialValue; }
+  if (!value || value === '') { return defaultValue; }
 
   return parse(value);
 };
 
-const Toolbar = ({ controls }) => (
-  <div className="rich-text__toolbar">
-    { includes(controls, 'bold') && <MarkButton format="bold" icon="format_bold" /> }
-    { includes(controls, 'italic') && <MarkButton format="italic" icon="format_italic" /> }
-    { includes(controls, 'underline') && <MarkButton format="underline" icon="format_underlined" /> }
-    { includes(controls, 'code') && <MarkButton format="code" icon="code" /> }
-    { includes(controls, 'headings') && (
-      <Fragment>
-        <BlockButton format="heading_one" icon="looks_one" />
-        <BlockButton format="heading_two" icon="looks_two" />
-      </Fragment>
-    )}
-    { includes(controls, 'quote') &&
-      <BlockButton format="block-quote" icon="format_quote" />
-    }
-    { includes(controls, 'list') && (
-      <Fragment>
-        <BlockButton format="numbered_list" icon="format_list_numbered" />
-        <BlockButton format="bulleted_list" icon="format_list_bulleted" />
-      </Fragment>
-    )}
-  </div>
-);
-
-const RichText = ({ allow, ...props }) => {
-  const [value, setValue] = useState(initialValue);
+const RichText = ({ allow, onChange, value: initialValue }) => {
+  const [value, setValue] = useState(defaultValue);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
+  // Initial prop on startup
   useEffect(() => {
-    console.log('onchange', { value, serialized: serialize(value) });
-    props.onChange(serialize(value));
-  }, [JSON.stringify(value)]);
-
-  useEffect(() => {
-    parseValue(props.value)
+    parseValue(initialValue)
       .then((result) => {
-        console.log({ parse: result });
         setValue(result);
       });
   }, []);
 
-  const handleChange = (value) => {
-    console.log({ value });
-    setValue(value);
-  };
+  // Update upstream on change
+  useEffect(() => {
+    onChange(serialize(value));
+  }, [onChange, value]);
 
   return (
-    <Slate editor={editor} value={value} onChange={handleChange}>
+    <Slate editor={editor} value={value} onChange={setValue}>
       <div className="rich-text">
         <Toolbar controls={allow} />
         <div className="rich-text__editable">
@@ -96,9 +67,15 @@ const RichText = ({ allow, ...props }) => {
   );
 };
 
+RichText.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  allow: PropTypes.arrayOf(PropTypes.string),
+};
+
 RichText.defaultProps = {
   value: [],
-  onChange: noop,
+  onChange: () => {},
   allow: types,
 };
 
